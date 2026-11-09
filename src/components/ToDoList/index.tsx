@@ -10,9 +10,10 @@ interface ToDoListProps {
     setFilter: (filter: 'all' | 'active' | 'completed') => void
     filter: 'all' | 'active' | 'completed'
     clearCompleted: () => void
+    removeToDo: (id: number) => void
 }
 
-const ToDoList = ({ toDoList, toggleToDoCompleted, setFilter, filter, clearCompleted }: ToDoListProps) => {
+const ToDoList = ({ toDoList, toggleToDoCompleted, setFilter, filter, clearCompleted, removeToDo }: ToDoListProps) => {
 
     const { theme } = useContext(ThemeContext);
 
@@ -22,7 +23,7 @@ const ToDoList = ({ toDoList, toggleToDoCompleted, setFilter, filter, clearCompl
                 <ul>
                     {
                         toDoList.map((todo) => (
-                            <li className={`p-6 border-b ${themeConfig[theme].todo.borderColor}`}
+                            <li className={`p-6 border-b flex items-center justify-between ${themeConfig[theme].todo.borderColor}`}
                                 key={todo.id}>
                                 <div className="flex items-center gap-4">
                                     <span className={`w-6 h-6 rounded-full hover:bg-[linear-gradient(to_right,hsl(192,100%,67%),hsl(280,87%,65%))] hover:p-px`}>
@@ -32,6 +33,14 @@ const ToDoList = ({ toDoList, toggleToDoCompleted, setFilter, filter, clearCompl
                                     </span>
                                     <p className={`${themeConfig[theme].todo.textColor} ${todo.completed ? "line-through opacity-50" : ""}`}>{todo.text}</p>
                                 </div>
+                                <button
+                                    type="button"
+                                    onClick={() => removeToDo(todo.id)}
+                                    aria-label={`Remover tarefa: ${todo.text}`}
+                                    className={`w-8 h-8 flex items-center justify-center text-5xl font-extralight leading-none opacity-80 hover:opacity-100 cursor-pointer ${theme === "dark" ? "text-gray-200" : "text-gray-400"}`}
+                                >
+                                    ×
+                                </button>
                             </li>
                         ))
                     }
